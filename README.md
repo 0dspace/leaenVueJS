@@ -1,2 +1,2 @@
-# leaenVueJS
-学习Vue.js
+# learnVueJS
+学习Vue.js测试代码

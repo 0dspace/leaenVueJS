@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Vue.js</title>
+    <link rel="stylesheet" href="normalize.css">
+</head>
+<body>
+    <div id="app">{{ message }}</div>
+    <div id="app2">
+        <span v-bind:title="message">鼠标悬停几秒钟查看此处动态绑定的提示信息！</span>
+    </div>
+    <div id="app3">
+        <p v-if="seen">现在`seen`是true</p>
+        <button v-on:click="showOrHide">{{ text }}</button>
+    </div>
+    <div id="app4">
+        <ol>
+            <li v-for="todo in todos">{{ todo.text }}</li>
+        </ol>
+    </div>
+    <div id="app5">
+        <p>{{ message.split('').reverse().join('') }}</p>
+        <button v-on:click="reverseMessage">点击逆转上面的文本</button>
+    </div>
+    <div id="app6">
+        <p>{{ message }}</p>
+        <input v-model="message">
+    </div>
+    <div id="app7">
+        <ol>
+            <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+    <div id="app8">
+        <p>{{ foo }}</p>
+        <button v-on:click="foo = 'changed'">change it</button>
+    </div>
+    <div id="app9">
+        <p v-once>{{ message }}</p>
+    </div>
+    <div id="app10">
+        <p>{{ html }}</p>
+        <p v-html="html">{{ html }}</p>
+    </div>
+<script src="vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '你好Vue，现在是' + new Date().toLocaleString()
+        }
+    });
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            message: '页面加载于' + new Date().toLocaleString()
+        }
+    });
+    var app3 = new Vue({
+        el: '#app3',
+        data: {
+            seen: true,
+            text: '隐藏'
+        },
+        methods: {
+            showOrHide: function() {
+                this.seen = !this.seen;
+                this.seen == false ? this.text = '显示' : this.text = '隐藏';
+            }
+        }
+    });
+    var app4 = new Vue({
+        el: '#app4',
+        data: {
+            todos: [
+                {text: 'Python'},
+                {text: 'Java'},
+                {text: 'JavaScript'}
+            ]
+        }
+    });
+    var app5 = new Vue({
+        el: '#app5',
+        data: {
+            message: '你好 Vue.js'
+        },
+        methods: {
+            reverseMessage: function() {
+                this.message = this.message.split('').reverse().join('')
+            }
+        }
+    });
+    var app6 = new Vue({
+        el: '#app6',
+        data: {
+            message: '你好 Vue.js!'
+        }
+    });
+    // 定义名为 todo-item 的新组件
+    Vue.component('todo-item', {
+        'props': ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    });
+    var app7 = new Vue({
+        el: '#app7',
+        data: {
+            groceryList: [
+                {id: 0, text: 'Python'},
+                {id: 1, text: 'Java'},
+                {id: 2, text: 'JavaScript'}
+            ]
+        }
+    });
+    var obj = {
+        foo: 'foo'
+    };
+    Object.freeze(obj);// 阻止修改此属性
+    new Vue({
+        el: '#app8',
+        data: obj
+    });
+    var app9 = new Vue({
+        el: '#app9',
+        data: {
+            message: '使用了v-once的消息'
+        }
+    });
+    var app10 = new Vue({
+        el: '#app10',
+        data: {
+            html: '<span style="color:red">应该是红色的文字</span>'
+        }
+    })
+</script>
+</body>
+</html>
