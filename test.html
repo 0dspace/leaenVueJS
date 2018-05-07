@@ -55,6 +55,12 @@
         </p>
         <p>{{ answer }}</p>
     </div>
+    <div id="todo-list-example">
+        <input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="添加一个TODO">
+        <ul>
+            <li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todo.splice(index, 1)"></li>
+        </ul>
+    </div>
 <script src="vue.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script src="https://cdn.bootcss.com/lodash.js/4.17.5/lodash.min.js"></script>
@@ -233,6 +239,46 @@
                 500// 这是我们为判定用户停止输入等待的毫秒数
             )
         }
+    });
+    Vue.component('todo-item', {
+      template: '\
+        <li>\
+          {{ title }}\
+          <button v-on:click="$emit(\'remove\')">X</button>\
+        </li>\
+      ',
+      props: ['title']
+    });
+
+    new Vue({
+      el: '#todo-list-example',
+      data: {
+        newTodoText: '',
+        todos: [
+          {
+            id: 1,
+            title: '提交GitHub',
+          },
+          {
+            id: 2,
+            title: '喝杯豆奶',
+          },
+          {
+            id: 3,
+            title: '泡脚'
+          }
+        ],
+        nextTodoId: 4
+      },
+      methods: {
+        addNewTodo: function () {
+          this.todos.push({
+            id: this.nextTodoId++,
+            title: this.newTodoText
+          })
+          this.newTodoText = ''
+        }
+      }
     });
 </script>
 </body>
